@@ -1,0 +1,115 @@
+﻿<Page x:Class="NetworkVisualizer.Code.MVVM.Views.Pages.SimulationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NetworkVisualizer.Code.MVVM.Views.Pages"
+      xmlns:viewmodels="clr-namespace:NetworkVisualizer.Code.MVVM.ViewModels"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1400"
+      d:DataContext="{d:DesignInstance Type=viewmodels:SimulationViewModel}"
+      Title="SimulationPage">
+
+    <Page.Resources>
+        <Style x:Key="CenterItem">
+            <Setter Property="Control.VerticalAlignment" Value="Center"/>
+            <Setter Property="Control.HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CanvasShape">
+            <Setter Property="Control.VerticalAlignment" Value="Center"/>
+            <Setter Property="Control.HorizontalAlignment" Value="Center"/>
+            <Setter Property="Control.MaxWidth" Value="750"/>
+            <Setter Property="Control.MaxHeight" Value="750"/>
+            <Setter Property="Control.MinHeight" Value="750"/>
+            <Setter Property="Control.MinWidth" Value="750"/>
+        </Style>
+        <Style x:Key="CanvasStyle" BasedOn="{StaticResource ResourceKey=CanvasShape}">
+            <Setter Property="Control.Background" Value="AntiqueWhite"/>
+            <Setter Property="Control.Margin" Value="5"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <!--#region Layout-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!--#endregion-->
+
+        <Viewbox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="5" Style="{StaticResource ResourceKey=CanvasShape}">
+            <Border BorderThickness="1, 1, 1, 1" BorderBrush="DarkGray" CornerRadius="15">
+                <Canvas x:Name="MainCanvas"  Style="{StaticResource ResourceKey=CanvasStyle}" ClipToBounds="True">
+                    <ContentPresenter Content="{Binding Path=MainCanvas}" />
+                </Canvas>
+            </Border>
+        </Viewbox>
+
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,10,10">
+            <Menu HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+                <MenuItem Header="Start" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Start}">
+                    <MenuItem.Icon>
+                        <ui:SymbolIcon Symbol="Play24"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Pause" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Pause}">
+                    <MenuItem.Icon>
+                        <ui:SymbolIcon Symbol="Pause24"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Reset" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Reset}">
+                    <MenuItem.Icon>
+                        <ui:SymbolIcon Symbol="ArrowReset24"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Clear" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Clear}">
+                    <MenuItem.Icon>
+                        <ui:SymbolIcon Symbol="Broom24"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
+            <Grid Margin="20" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="6*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Name="SpeedTextBlock" Text="{Binding SliderSpeed, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Slider Grid.Column="1" x:Name="SpeedSlider" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="TopLeft"  Minimum="0" Maximum="9" 
+                        HorizontalAlignment="Stretch" Value="{Binding SliderSpeed}"/>
+            </Grid>
+
+            <ListBox ItemsSource="{Binding AnalysisInfos}" 
+                         Margin="10" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ResourceKey=CenterItem}" 
+                                           FontWeight="Bold" Text="{Binding Path=ParameterName}" Margin="5"/>
+                            <TextBlock Grid.Column="1" Style="{StaticResource ResourceKey=CenterItem}" 
+                                           Text="{Binding Path=ParameterValue}" Margin="5"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <Border BorderBrush="{ui:ThemeResource ResourceKey=TextFillColorTertiaryBrush}" BorderThickness="1" Grid.Column="1" Grid.Row="1" Margin="10">
+            <lvc:CartesianChart Series="{Binding Series}">
+            </lvc:CartesianChart>
+        </Border>
+        
+    </Grid>
+</Page>
