@@ -10,7 +10,7 @@ namespace NetworkVisualizer.Code.MVVM.ViewModels;
 
 public enum SimulationMenuCommand
 {
-    Start, Pause, Reset, Clear
+    Start, Pause, Reset, Restart, Clear
 }
 
 public class SimulationViewModel : ViewModelBase
