@@ -69,6 +69,9 @@ public class SimulationViewModel : ViewModelBase
             case SimulationMenuCommand.Clear:
                 _isRunning = false;
                 break;
+            case SimulationMenuCommand.Restart:
+                _isRunning = true;
+                break;
         }
     }
     private bool CanBeExecutedMenuHandler(SimulationMenuCommand command)
