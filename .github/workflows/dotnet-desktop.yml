@@ -89,6 +89,9 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    - name: Code sign a file
+      uses: dlemstra/code-sign-action@v1
+            
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     - name: Decode the pfx
       run: |
