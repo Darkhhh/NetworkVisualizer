@@ -65,6 +65,11 @@
                         <ui:SymbolIcon Symbol="Pause24"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Header="Restart" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Restart}">
+                    <MenuItem.Icon>
+                        <ui:SymbolIcon Symbol="ArrowClockwise24"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="Reset" Command="{Binding MenuCommand}" CommandParameter="{x:Static viewmodels:SimulationMenuCommand.Reset}">
                     <MenuItem.Icon>
                         <ui:SymbolIcon Symbol="ArrowReset24"/>
